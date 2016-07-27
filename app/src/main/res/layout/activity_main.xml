@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <go_protractor.gucci1208.com.goprotractor.MatrixImageView
+        android:id="@+id/img_view"
+        angleSpeedDecRatio="0.85"
+        inertial="true"
+        interval="20"
+        speedDecRatio="0.85"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/protractor" />
+</LinearLayout>
