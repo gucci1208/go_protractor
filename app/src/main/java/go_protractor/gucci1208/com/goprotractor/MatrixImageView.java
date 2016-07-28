@@ -79,26 +79,32 @@ public class MatrixImageView extends ImageView implements View.OnTouchListener {
      */
     private void redraw() {
         if (mode == Mode.NONE) {
-//移動、回転の慣性反映
+            //移動、回転の慣性反映
             previous.set(previous.x + speed.x, previous.y + speed.y);
             matrix.postTranslate(speed.x, speed.y);
-            matrix.postRotate(angleSpeed, previous.x, previous.y);
-//以下、次回の慣性のための移動スピード、回転スピード軽減処理
-//移動による慣性
+
+            //matrix.postRotate(angleSpeed, previous.x, previous.y);
+
+            //以下、次回の慣性のための移動スピード、回転スピード軽減処理
+            //移動による慣性
             speed.set(speed.x * speedDecRatio, speed.y * speedDecRatio);
-//慣性の移動量が十分に小さくなったときは停止
+
+            //慣性の移動量が十分に小さくなったときは停止
             if (-1 < speed.x && speed.x < 1) {
                 speed.x = 0;
             }
             if (-1 < speed.y && speed.y < 1) {
                 speed.y = 0;
             }
-//回転による慣性
+
+            //回転による慣性
             angleSpeed = angleSpeed * angleSpeedDecRatio;
-//慣性による回転量が十分に小さくなったときは停止
+
+            //慣性による回転量が十分に小さくなったときは停止
             if (-1 < angleSpeed && angleSpeed < 1) {
                 angleSpeed = 0;
             }
+
             setImageMatrix(matrix);
         }
     }
@@ -143,39 +149,45 @@ public class MatrixImageView extends ImageView implements View.OnTouchListener {
                 } else {
                     return false;
                 }
-//移動処理
+
+                //移動処理
                 float distanceX = current.x - previous.x;
                 float distanceY = current.y - previous.y;
                 matrix.postTranslate(distanceX, distanceY);
                 if (mode == Mode.TWO_POINT) {
-//ズーム処理
+                    //ズーム処理
                     float newDist = spacing(event);
                     midPoint(mid, event);
                     float scale = newDist / oldDist;
                     float tempRatio = curRatio * scale;
                     oldDist = newDist;
-//倍率が上限値下限値の範囲外なら補正する
+
+                    //倍率が上限値下限値の範囲外なら補正する
                     curRatio = Math.min(Math.max(0.1f, curRatio), 20f);
                     if (0.1f < tempRatio && tempRatio < 20f) {
                         curRatio = tempRatio;
                         matrix.postScale(scale, scale, mid.x, mid.y);
                     }
-//回転処理
+
+                    //回転処理
                     Line line = new Line(
                             new PointF(event.getX(0), event.getY(0)),
                             new PointF(event.getX(1), event.getY(1))
                     );
                     float angle = (float) (previousLine.getAngle(line) * 180 / Math.PI);
-                    matrix.postRotate(angle, current.x, current.y);
-//次回の準備
+                    //matrix.postRotate(angle, current.x, current.y);
+
+                    //次回の準備
                     angleSpeed = angle;
                     previousLine = line;
                 }
-//次回の準備
+
+                //次回の準備
                 speed = new PointF(current.x - previous.x, current.y - previous.y);
                 previous.set(current.x, current.y);
         }
-// 変換の実行
+
+        // 変換の実行
         view.setImageMatrix(matrix);
         return true; // イベントがハンドリングされたことを示す
     }
