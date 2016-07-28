@@ -11,8 +11,7 @@
         android:scaleType="fitXY"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/sample" />
+        android:layout_height="wrap_content" />
 
     <go_protractor.gucci1208.com.goprotractor.MatrixImageView
         android:id="@+id/img_view"
@@ -26,13 +25,40 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <net.nend.android.NendAdIconLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            NendIconCount="3"
+            NendApiKey="d9ca07534001e1114479c7e6f7d0080bfe1769a1"
+            NendSpotId="634064"
+            NendOrientation="vertical" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
         <Button
             android:id="@+id/load_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_height="50dp"
             android:text="Load Screenshot" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <net.nend.android.NendAdView
+                android:id="@+id/nend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                NendApiKey="08228d753fd696905686c93826c7e9c70dbe8923"
+                NendSpotId="634060" />
+        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

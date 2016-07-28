@@ -1,73 +1,107 @@
 package go_protractor.gucci1208.com.goprotractor;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.ParcelFileDescriptor;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import net.nend.android.NendAdInterstitial;
+
+import java.io.FileDescriptor;
+import java.io.IOException;
+
 public class MainActivity extends Activity {
-    private static final int IMAGE_CHOOSER_RESULTCODE = 1001;
-    private Uri mPictureUri;
+    private static final int RESULT_PICK_IMAGEFILE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
-        ((Button)findViewById(R.id.load_button)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.load_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // ギャラリーから選択
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.setType("image/*");
-                i.addCategory(Intent.CATEGORY_OPENABLE);
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("image/*");
 
-                // カメラで撮影
-                String filename = System.currentTimeMillis() + ".jpg";
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.TITLE, filename);
-                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                mPictureUri = getContentResolver()
-                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-                Intent i2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                i2.putExtra(MediaStore.EXTRA_OUTPUT, mPictureUri);
-
-                // ギャラリー選択のIntentでcreateChooser()
-                Intent chooserIntent = Intent.createChooser(i, "Pick Image");
-                // EXTRA_INITIAL_INTENTS にカメラ撮影のIntentを追加
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { i2 });
-
-                startActivityForResult(chooserIntent, IMAGE_CHOOSER_RESULTCODE);
+                startActivityForResult(intent, RESULT_PICK_IMAGEFILE);
             }
         });
+
+        //インタースティシャル広告
+        NendAdInterstitial.loadAd(getApplicationContext(), "bdde9fb68c3ab7e9f54398557e9cb54af0f70591", 634067);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IMAGE_CHOOSER_RESULTCODE) {
-
-            if (resultCode != RESULT_OK) {
-                if (mPictureUri != null) {
-                    getContentResolver().delete(mPictureUri, null, null);
-                    mPictureUri = null;
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (requestCode == RESULT_PICK_IMAGEFILE && resultCode == Activity.RESULT_OK) {
+            Uri uri;
+            if (resultData != null) {
+                uri = resultData.getData();
+                try {
+                    Bitmap bmp = getBitmapFromUri(uri);
+                    ((ImageView) findViewById(R.id.screenshot_image)).setImageBitmap(bmp);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                return;
             }
-
-            // 画像を取得
-            Uri result = (data == null) ? mPictureUri : data.getData();
-            ImageView iv = (ImageView) findViewById(R.id.screenshot_image);
-            iv.setImageURI(result);
-
-            mPictureUri = null;
         }
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+                getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //インタースティシャル広告表示
+            NendAdInterstitial.showAd(this, new NendAdInterstitial.OnClickListenerSpot() {
+                @Override
+                public void onClick(NendAdInterstitial.NendAdInterstitialClickType clickType) {
+                    // こちらの通知は呼び出されません
+                }
+
+                @Override
+                public void onClick(NendAdInterstitial.NendAdInterstitialClickType clickType, int spotId) {
+                    // 引数に対象の広告枠 ID を付与してクリックイベントを通知します
+                    switch (clickType) {
+                        case CLOSE:
+                            // ×ボタンまたは範囲外タップ
+                            finish();
+                            break;
+                        case DOWNLOAD:
+                            // ダウンロードボタン
+                            finish();
+                            break;
+                        case INFORMATION:
+                            // インフォメーションボタン
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+
+            return true;
+        }
+        return false;
     }
 }

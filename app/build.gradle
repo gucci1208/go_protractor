@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "go_protractor.gucci1208.com.goprotractor"
-        minSdkVersion 8
+        minSdkVersion 19
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -23,4 +23,11 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'net.nend.android:nend-sdk:3.1.1'
+}
+
+repositories {
+    maven {
+        url 'http://fan-adn.github.io/nendSDK-Android-lib/library'
+    }
 }
