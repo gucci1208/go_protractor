@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -70,38 +69,26 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //インタースティシャル広告表示
-            NendAdInterstitial.showAd(this, new NendAdInterstitial.OnClickListenerSpot() {
-                @Override
-                public void onClick(NendAdInterstitial.NendAdInterstitialClickType clickType) {
-                    // こちらの通知は呼び出されません
+    public void onBackPressed() {
+        //インタースティシャル広告表示
+        NendAdInterstitial.showAd(this, new NendAdInterstitial.OnClickListener() {
+            @Override
+            public void onClick(NendAdInterstitial.NendAdInterstitialClickType clickType) {
+                switch (clickType) {
+                    case CLOSE:
+                        // ×ボタンまたは範囲外タップ
+                        finish();
+                        break;
+                    case DOWNLOAD:
+                        // ダウンロードボタン
+                        break;
+                    case INFORMATION:
+                        // インフォメーションボタン
+                        break;
+                    default:
+                        break;
                 }
-
-                @Override
-                public void onClick(NendAdInterstitial.NendAdInterstitialClickType clickType, int spotId) {
-                    // 引数に対象の広告枠 ID を付与してクリックイベントを通知します
-                    switch (clickType) {
-                        case CLOSE:
-                            // ×ボタンまたは範囲外タップ
-                            finish();
-                            break;
-                        case DOWNLOAD:
-                            // ダウンロードボタン
-                            finish();
-                            break;
-                        case INFORMATION:
-                            // インフォメーションボタン
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            });
-
-            return true;
-        }
-        return false;
+            }
+        });
     }
 }

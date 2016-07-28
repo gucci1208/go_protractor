@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            NendIconCount="3"
+            NendIconCount="1"
             NendApiKey="d9ca07534001e1114479c7e6f7d0080bfe1769a1"
             NendSpotId="634064"
             NendOrientation="vertical" />
