@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/screenshot_image"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY" />
 
-    <go_protractor.gucci1208.com.goprotractor.MatrixImageView
+    <go_protractor.gucci1208.com.goprotractor.View.MatrixImageView
         android:id="@+id/img_view"
         angleSpeedDecRatio="0.85"
         inertial="true"
@@ -23,24 +22,29 @@
         android:layout_height="match_parent"
         android:src="@drawable/protractor" />
 
+    <NumberPicker
+        android:id="@+id/numPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <net.nend.android.NendAdIconLayout
+            NendApiKey="d9ca07534001e1114479c7e6f7d0080bfe1769a1"
+            NendIconCount="1"
+            NendOrientation="vertical"
+            NendSpotId="634064"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            NendIconCount="1"
-            NendApiKey="d9ca07534001e1114479c7e6f7d0080bfe1769a1"
-            NendSpotId="634064"
-            NendOrientation="vertical" />
+            android:layout_gravity="right" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/load_button"
@@ -52,12 +56,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center">
+
             <net.nend.android.NendAdView
                 android:id="@+id/nend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 NendApiKey="08228d753fd696905686c93826c7e9c70dbe8923"
-                NendSpotId="634060" />
+                NendSpotId="634060"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 

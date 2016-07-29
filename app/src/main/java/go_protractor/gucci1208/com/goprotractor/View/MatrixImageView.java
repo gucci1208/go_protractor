@@ -1,4 +1,4 @@
-package go_protractor.gucci1208.com.goprotractor;
+package go_protractor.gucci1208.com.goprotractor.View;
 
 import android.content.Context;
 import android.graphics.Matrix;

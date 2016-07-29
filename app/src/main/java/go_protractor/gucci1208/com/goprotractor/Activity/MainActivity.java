@@ -1,4 +1,4 @@
-package go_protractor.gucci1208.com.goprotractor;
+package go_protractor.gucci1208.com.goprotractor.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,14 +12,24 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 
 import net.nend.android.NendAdInterstitial;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
 
+import go_protractor.gucci1208.com.goprotractor.R;
+import go_protractor.gucci1208.com.goprotractor.Util.WrapperShared;
+import go_protractor.gucci1208.com.goprotractor.View.DrawProtractor;
+import go_protractor.gucci1208.com.goprotractor.View.MatrixImageView;
+
 public class MainActivity extends Activity {
+    private WrapperShared wrapperShared;
+
     private static final int RESULT_PICK_IMAGEFILE = 1001;
+
+    private DrawProtractor drawProtractor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +37,11 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+
+        wrapperShared = new WrapperShared(this);
+
+        //分度器お絵描きクラス
+        drawProtractor = new DrawProtractor(MainActivity.this);
 
         ((Button) findViewById(R.id.load_button)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +53,19 @@ public class MainActivity extends Activity {
                 startActivityForResult(intent, RESULT_PICK_IMAGEFILE);
             }
         });
+
+        // 値が変化した時に通知を受け取るリスナーを登録する
+        ((NumberPicker)findViewById(R.id.numPicker)).setMinValue(1);
+        ((NumberPicker)findViewById(R.id.numPicker)).setMaxValue(40);
+        ((NumberPicker)findViewById(R.id.numPicker)).setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                ((MatrixImageView) findViewById(R.id.img_view)).setImageBitmap(drawProtractor.drawProtractor(newVal));
+
+                wrapperShared.saveInt(WrapperShared.KEY_TRAINER_LEVEL, newVal);
+            }
+        });
+        ((NumberPicker)findViewById(R.id.numPicker)).setValue(wrapperShared.getInt(WrapperShared.KEY_TRAINER_LEVEL, 1));
 
         //インタースティシャル広告
         NendAdInterstitial.loadAd(getApplicationContext(), "bdde9fb68c3ab7e9f54398557e9cb54af0f70591", 634067);
