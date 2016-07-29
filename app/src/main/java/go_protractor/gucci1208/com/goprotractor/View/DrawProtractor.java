@@ -37,7 +37,7 @@ public class DrawProtractor {
         canvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
         // 線の太さ
-        int lineWidth = 20;
+        int lineWidth = 10;
 
         //色のセット
         Paint paint = new Paint();
@@ -55,31 +55,38 @@ public class DrawProtractor {
 
         //円の中心の座標
         int centerX = widthPixels / 2 - lineWidth / 2;
-        int centerY = widthPixels / 2;
+        int centerY = widthPixels / 2 - lineWidth;
 
         //円の半径
-        int radius = widthPixels / 2 - lineWidth;
-        int radius2 = radius;
+        int radius = widthPixels / 2 - (lineWidth * 2);
+        int radius2;
 
         //描画する角度の数
         int drawAngleNum = Math.min((trainerLevel) * 2 + 2, 79);
 
-        lineWidth = 5;
+        lineWidth = 6;
         paint.setStrokeCap(Paint.Cap.SQUARE);
         paint.setStrokeWidth(lineWidth);
 
+        //Javascriptと計算結果が違いすぎるので苦肉の策
+        int calc1 = 5;
+        int calc2 = -1;
         for (int i = 0; i < drawAngleNum; i++) {
-            if (((i / 2 + 1) % 10) == 0) {
-                radius2 = radius - 200;
-            } else if ((i / 2 + 1) % 1 == 0) {
-                radius2 = radius - 120;
+            calc1 += 5;
+            calc2++;
+
+            if (calc1 % 100 == 0) {
+                radius2 = radius - 140;
             } else {
-                radius2 = radius - 40;
+                if (calc2 % 2 == 0) {
+                    radius2 = radius - 80;
+                } else {
+                    radius2 = radius - 40;
+                }
             }
 
             //角度
             double degree = ((CpM[i] - 0.094) * 202.037116 / CpM[trainerLevel * 2 - 2]);
-            Log.d("aaa", "degree:" + degree);
             if (degree > 180) {
                 //180度を超えちゃったら描画しない
                 continue;

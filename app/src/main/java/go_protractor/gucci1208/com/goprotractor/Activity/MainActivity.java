@@ -31,6 +31,8 @@ public class MainActivity extends Activity {
 
     private DrawProtractor drawProtractor;
 
+    private NumberPicker numberPicker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +57,10 @@ public class MainActivity extends Activity {
         });
 
         // 値が変化した時に通知を受け取るリスナーを登録する
-        ((NumberPicker)findViewById(R.id.numPicker)).setMinValue(1);
-        ((NumberPicker)findViewById(R.id.numPicker)).setMaxValue(40);
-        ((NumberPicker)findViewById(R.id.numPicker)).setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        numberPicker = (NumberPicker)findViewById(R.id.numPicker);
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(40);
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 ((MatrixImageView) findViewById(R.id.img_view)).setImageBitmap(drawProtractor.drawProtractor(newVal));
@@ -65,7 +68,11 @@ public class MainActivity extends Activity {
                 wrapperShared.saveInt(WrapperShared.KEY_TRAINER_LEVEL, newVal);
             }
         });
-        ((NumberPicker)findViewById(R.id.numPicker)).setValue(wrapperShared.getInt(WrapperShared.KEY_TRAINER_LEVEL, 1));
+
+        //初期状態
+        numberPicker.setValue(wrapperShared.getInt(WrapperShared.KEY_TRAINER_LEVEL, 1));
+        ((MatrixImageView) findViewById(R.id.img_view)).setImageBitmap(
+                drawProtractor.drawProtractor(numberPicker.getValue()));
 
         //インタースティシャル広告
         NendAdInterstitial.loadAd(getApplicationContext(), "bdde9fb68c3ab7e9f54398557e9cb54af0f70591", 634067);
