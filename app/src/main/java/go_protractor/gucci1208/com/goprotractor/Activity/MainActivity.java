@@ -58,12 +58,16 @@ public class MainActivity extends Activity {
 
         // 値が変化した時に通知を受け取るリスナーを登録する
         numberPicker = (NumberPicker)findViewById(R.id.numPicker);
-        numberPicker.setMinValue(1);
+        numberPicker.setMinValue(0);
         numberPicker.setMaxValue(40);
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                ((MatrixImageView) findViewById(R.id.img_view)).setImageBitmap(drawProtractor.drawProtractor(newVal));
+                if (newVal == 0) {
+                    ((MatrixImageView) findViewById(R.id.img_view)).setImageResource(R.drawable.protractor);
+                } else {
+                    ((MatrixImageView) findViewById(R.id.img_view)).setImageBitmap(drawProtractor.drawProtractor(newVal));
+                }
 
                 wrapperShared.saveInt(WrapperShared.KEY_TRAINER_LEVEL, newVal);
             }
