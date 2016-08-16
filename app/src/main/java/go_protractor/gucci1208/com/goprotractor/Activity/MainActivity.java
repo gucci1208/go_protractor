@@ -93,6 +93,8 @@ public class MainActivity extends Activity {
         }
         numberPicker.setPadding(0, statusBarHeight, 0, 0);
 
+        findViewById(R.id.ad_icon).setPadding(0, statusBarHeight, 0, 0);
+
         //分度器のレイヤーを出し入れするボタン
         findViewById(R.id.start_button).setOnClickListener(new View.OnClickListener() {
             @Override

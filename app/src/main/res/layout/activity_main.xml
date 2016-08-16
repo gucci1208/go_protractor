@@ -33,6 +33,7 @@
         android:orientation="vertical">
 
         <net.nend.android.NendAdIconLayout
+            android:id="@+id/ad_icon"
             NendApiKey="d9ca07534001e1114479c7e6f7d0080bfe1769a1"
             NendIconCount="1"
             NendOrientation="vertical"
