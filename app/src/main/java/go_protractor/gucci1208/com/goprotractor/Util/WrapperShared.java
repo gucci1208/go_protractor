@@ -10,6 +10,7 @@ public class WrapperShared {
     final String FILE_NAME = "file_name";
 
     public static final String KEY_TRAINER_LEVEL = "trainer_level";
+    public static final String KEY_VIEW_BITMAP = "view_bitmap";
 
     public WrapperShared(Context context) {
         this.context = context;
